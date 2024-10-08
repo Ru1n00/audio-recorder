@@ -55,6 +55,7 @@ function handleRecording() {
     if(mediaRecorder) {
         mediaRecorder.start();
         console.log(mediaRecorder.state, 'mediaRecorder.state');
+
         mediaRecorder.ondataavailable = function(e) {
             console.log(e, 'e');
             chunks.push(e.data);
@@ -71,45 +72,48 @@ function handleRecording() {
 function handleStop() {
     if(mediaRecorder) {
         mediaRecorder.stop();
-        console.log(mediaRecorder.state, 'mediaRecorder.state');
-        console.log(mediaRecorder, 'mediaRecorder.state');
-        console.log('recording stopped!');
+        mediaRecorder.onstop = function(e) {
+            console.log('recording stopped!');
+            console.log(mediaRecorder, 'mediaRecorder');
+            console.log('mimetype', mediaRecorder.mimeType);
 
-        const clipName = prompt('Enter a name for your sound clip?','My unnamed clip');
-        const clipContainer = document.createElement("article");
-        const clipLabel = document.createElement("p");
-        const audio = document.createElement("audio");
-        const deleteButton = document.createElement("button");
-        const downloadButton = document.createElement("a");
+            const clipName = prompt('Enter a name for your sound clip?','My unnamed clip');
+            const clipContainer = document.createElement("article");
+            const clipLabel = document.createElement("p");
+            const audio = document.createElement("audio");
+            const deleteButton = document.createElement("button");
+            const downloadButton = document.createElement("a");
 
 
 
-        clipContainer.classList.add("clip");
-        audio.setAttribute("controls", "");
-        deleteButton.textContent = "Delete";
-        deleteButton.className = "delete";
-        clipLabel.textContent = clipName;
-        downloadButton.textContent = "Download";
-        downloadButton.className = "download";
-        downloadButton.download = clipName + '.ogg';
-        
-        clipContainer.appendChild(audio);
-        clipContainer.appendChild(clipLabel);
-        clipContainer.appendChild(downloadButton);
-        clipContainer.appendChild(deleteButton);
-        soundClips.appendChild(clipContainer);
-        
-        let blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
-        console.log(blob, 'blob');
-        chunks = [];
-        let audioURL = URL.createObjectURL(blob);
-        console.log(audioURL, 'audioURL');
-        audio.src = audioURL;
-        downloadButton.href = audioURL;
+            clipContainer.classList.add("clip");
+            audio.setAttribute("controls", "");
+            deleteButton.textContent = "Delete";
+            deleteButton.className = "delete";
+            clipLabel.textContent = clipName;
+            downloadButton.textContent = "Download";
+            downloadButton.className = "download";
+            downloadButton.download = clipName + '.ogg';
+            
+            clipContainer.appendChild(audio);
+            clipContainer.appendChild(clipLabel);
+            clipContainer.appendChild(downloadButton);
+            clipContainer.appendChild(deleteButton);
+            soundClips.appendChild(clipContainer);
+            
 
-        deleteButton.onclick = function(e) {
-            let evtTgt = e.target;
-            evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+            let blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+            console.log(blob, 'blob');
+            chunks = [];
+            let audioURL = URL.createObjectURL(blob);
+            console.log(audioURL, 'audioURL');
+            audio.src = audioURL;
+            downloadButton.href = audioURL;
+
+            deleteButton.onclick = function(e) {
+                let evtTgt = e.target;
+                evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+            }
         }
 
         return 1;
@@ -133,11 +137,6 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         mediaRecorder = new MediaRecorder(stream);
         console.log(mediaRecorder, 'mediaRecorder');
 
-
-
-        mediaRecorder.ondataavailable = function(e) {
-            console.log(e, 'e');
-        }
     }).catch(err => {
         console.log(err, 'err');
     });

@@ -1,0 +1,81 @@
+#app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    gap: 16px;
+    background: #f0f0f0;
+}
+#app .recorder-controls{
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 400px;
+    border: 1px solid #000;
+    gap: 8px;
+}
+
+.sound-clips {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 300px;
+    padding: 10px;
+}
+
+.clip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+    gap: 10px;
+}
+
+
+.status {
+    width: 300px;
+    background: aqua;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.recorder-controls button {
+    padding: 10px;
+    background: #f00;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    min-width: 300px;
+    border-radius: 5px;
+}
+
+.recorder-controls button:hover {
+    background: #0f0;
+}
+
+.recorder-controls button[disabled] {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.recording-on span {
+    animation: fade-in-out 1s ease-in infinite forwards;
+}
+
+@keyframes fade-in-out {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
